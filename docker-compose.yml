@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: customspaces_postgres
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    expose:
+      - ${POSTGRES_PORT} 
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:6
+    container_name: customspaces_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+  backend:
+    build:
+      context: ./custom-spaces-nest-api
+    container_name: customspaces_backend
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - mongo
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      SQL_DB_HOST: ${POSTGRES_HOST}
+      SQL_DB_PORT: ${POSTGRES_PORT}
+      SQL_DB_USERNAME: ${POSTGRES_USERNAME}
+      SQL_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      MONGO_DB_URL: mongodb://mongo:27017/custom-spaces
+    volumes:
+      - ./custom-spaces-nest-api:/app
+    command: sh -c "npm install && npm run start:dev"
+
+  frontend:
+    build:
+      context: ./custom-spaces-next-client
+    container_name: customspaces_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./custom-spaces-next-client:/app
+    command: sh -c "npm install && npm run dev"
+
+volumes:
+  pgdata:
+  mongodata:

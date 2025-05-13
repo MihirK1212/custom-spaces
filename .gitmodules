@@ -1,0 +1,9 @@
+[submodule "custom-spaces-nest-api"]
+	path = custom-spaces-nest-api
+	url = .\\custom-spaces-nest-api\\
+[submodule "custom-spaces-next-client"]
+	path = custom-spaces-next-client
+	url = .\\custom-spaces-next-client\\
+[submodule "custom-spaces-python-api"]
+	path = custom-spaces-python-api
+	url = .\\custom-spaces-python-api\\
