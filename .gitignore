@@ -1,3 +1,5 @@
 .env
 prompt.txt
 custom-spaces-documentation/
+docker_command.txt
+node_modules

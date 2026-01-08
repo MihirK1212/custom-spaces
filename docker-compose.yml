@@ -45,6 +45,9 @@ services:
       SQL_DB_USERNAME: ${POSTGRES_USERNAME}
       SQL_DB_PASSWORD: ${POSTGRES_PASSWORD}
       MONGO_DB_URL: mongodb://mongo:27017/custom-spaces
+      WATCHPACK_POLLING: true
+      CHOKIDAR_USEPOLLING: true
+
     volumes:
       - ./custom-spaces-nest-api:/app
     command: sh -c "npm install && npm run start:dev"
@@ -57,9 +60,23 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+    environment:
+      WATCHPACK_POLLING: true
     volumes:
       - ./custom-spaces-next-client:/app
     command: sh -c "npm install && npm run dev"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: customspaces_pgadmin
+    restart: always
+    ports:
+      - "5050:80"  # pgAdmin will be available at http://localhost:5050
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@customspaces.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    depends_on:
+      - postgres
 
 volumes:
   pgdata:

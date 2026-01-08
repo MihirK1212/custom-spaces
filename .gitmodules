@@ -7,3 +7,6 @@
 [submodule "custom-spaces-python-api"]
 	path = custom-spaces-python-api
 	url = .\\custom-spaces-python-api\\
+[submodule "assistant-gateway"]
+	path = assistant-gateway
+	url = .\\assistant-gateway\\
