@@ -1,5 +1,5 @@
 .env
 prompt.txt
-custom-spaces-documentation/
+custom-spaces-internal-documentation/
 docker_command.txt
 node_modules
